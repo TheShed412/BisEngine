@@ -56,4 +56,10 @@ static struct player
     unsigned sector;                        // Which sector the player is currently in
 } player;
 
+void LoadData();
+void UnloadData();
+void vline(int, int, int, int, int, int);
+void MovePlayer(float, float);
+void DrawScreen();
+
 #endif

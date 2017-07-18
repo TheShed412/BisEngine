@@ -7,7 +7,7 @@
 
 //TODO: Backing in to some corners makes you move backwards and not buffer
 
-static void LoadData()
+void LoadData()
 {
     FILE* fp = fopen("map-clear.txt", "rt");
     if(!fp) { perror("map-clear.txt"); exit(1); }
@@ -45,7 +45,7 @@ static void LoadData()
     fclose(fp);
     free(vert);
 }
-static void UnloadData()
+void UnloadData()
 {
     for(unsigned a=0; a<NumSectors; ++a) free(sectors[a].vertex);
     for(unsigned a=0; a<NumSectors; ++a) free(sectors[a].neighbors);
@@ -57,7 +57,7 @@ static void UnloadData()
 static SDL_Surface* surface = NULL;
 
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
-static void vline(int x, int y1,int y2, int top,int middle,int bottom)
+void vline(int x, int y1,int y2, int top,int middle,int bottom)
 {
     int *pix = (int*) surface->pixels;
     y1 = clamp(y1, 0, H-1);
@@ -75,7 +75,7 @@ static void vline(int x, int y1,int y2, int top,int middle,int bottom)
 /* MovePlayer(dx,dy): Moves the player by (dx,dy) in the map, and
  * also updates their anglesin/anglecos/sector properties properly.
  */
-static void MovePlayer(float dx, float dy)
+void MovePlayer(float dx, float dy)
 {
     float px = player.where.x, py = player.where.y;
     /* Check if this movement crosses one of this sector's edges
@@ -101,7 +101,7 @@ static void MovePlayer(float dx, float dy)
     player.anglecos = cosf(player.angle);
 }
 
-static void DrawScreen()
+void DrawScreen()
 {
     enum { MaxQueue = 32 };  // maximum number of pending portal renders
     struct item { int sectorno,sx1,sx2; } queue[MaxQueue], *head=queue, *tail=queue;
