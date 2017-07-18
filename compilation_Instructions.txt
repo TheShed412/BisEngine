@@ -1,0 +1,2 @@
+gcc `sdl-config --cflags` -c prender.c
+gcc prender.o `sdl-config --libs` -o prender -lm
