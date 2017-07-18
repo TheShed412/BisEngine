@@ -3,9 +3,11 @@
 #include <math.h>
 #include <SDL.h>
 
+//TODO: Backing in to some corners makes you move backwards and not buffer
+
 /* Define window size */
-#define W 608
-#define H 480
+#define W 1200
+#define H 800
 /* Define various vision related constants */
 #define EyeHeight  6    // Camera height from floor when standing
 #define DuckHeight 2.5  // And when crouching
