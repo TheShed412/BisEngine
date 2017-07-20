@@ -6,7 +6,7 @@
 #include "prender.h"
 
 //TODO: Backing in to some corners makes you move backwards and not buffer
-
+//TODO: Put non-main methods in seperate file
 void LoadData()
 {
     FILE* fp = fopen("map-clear.txt", "rt");
@@ -54,7 +54,7 @@ void UnloadData()
     NumSectors = 0;
 }
 
-static SDL_Surface* surface = NULL;
+
 
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
 void vline(int x, int y1,int y2, int top,int middle,int bottom)

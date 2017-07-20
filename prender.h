@@ -56,6 +56,8 @@ static struct player
     unsigned sector;                        // Which sector the player is currently in
 } player;
 
+SDL_Surface* surface = NULL;
+
 void LoadData();
 void UnloadData();
 void vline(int, int, int, int, int, int);
