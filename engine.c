@@ -17,8 +17,14 @@ void LoadData()
     char Buf[256], word[256], *ptr;
     struct xy* vert = NULL, v;
     int n, m, NumVertices = 0;
-    while(fgets(Buf, sizeof Buf, fp))
-        switch(sscanf(ptr = Buf, "%32s%n", word, &n) == 1 ? word[0] : '\0')
+    while(fgets(Buf, sizeof Buf, fp)){
+
+        char setup;
+        ptr = Buf;
+        if (sscanf(ptr, "%32s%n", word, &n) == 1)   setup = word[0];
+        else    setup = '\0';
+
+        switch(setup)
         {
             case 'v': // vertex
                 for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; )
@@ -45,6 +51,7 @@ void LoadData()
                 player = (struct player) { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
                 player.where.z = sectors[player.sector].floor + EyeHeight;
         }
+    }
     fclose(fp);
     free(vert);
 }
