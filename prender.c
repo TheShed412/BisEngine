@@ -9,6 +9,8 @@
 //TODO: Put non-main methods in seperate file
 
 
+static void quit();
+
 int main()
 {
     LoadData();
@@ -98,7 +100,7 @@ int main()
                         case 's': wsad[1] = ev.type==SDL_KEYDOWN; break;
                         case 'a': wsad[2] = ev.type==SDL_KEYDOWN; break;
                         case 'd': wsad[3] = ev.type==SDL_KEYDOWN; break;
-                        case 'q': goto done;
+                        case 'q': quit();
                         case ' ': /* jump */
                             if(ground) { player.velocity.z += 0.5; falling = 1; }
                             break;
@@ -107,7 +109,7 @@ int main()
                         default: break;
                     }
                     break;
-                case SDL_QUIT: goto done;
+                case SDL_QUIT: quit();
             }
 
         /* mouse aiming */
@@ -133,10 +135,17 @@ int main()
 
         SDL_Delay(10);
     }
-done:
+
     UnloadData();
     SDL_Quit();
     return 0;
+}
+
+static void quit()
+{
+    UnloadData();
+    SDL_Quit();
+    exit(0);
 }
 
 
