@@ -27,11 +27,17 @@ void LoadData()
         switch(setup)
         {
             case 'v': // vertex
-                for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; )
-                    { vert = realloc(vert, ++NumVertices * sizeof(*vert)); vert[NumVertices-1] = v; }
+            ptr += n;
+            sscanf(ptr, "%f%n", &v.y, &n);
+            ptr += n;
+                while(sscanf(ptr, "%f%n", &v.x, &n) == 1){ 
+                    vert = realloc(vert, ++NumVertices * sizeof(*vert)); vert[NumVertices-1] = v;
+                    ptr += n;
+                }
                 break;
             case 's': // sector
-                sectors = realloc(sectors, ++NumSectors * sizeof(*sectors));
+                NumSectors++;
+                sectors = realloc(sectors, NumSectors * sizeof(*sectors));
                 struct sector* sect = &sectors[NumSectors-1];
                 int* num = NULL;
                 sscanf(ptr += n, "%f%f%n", &sect->floor,&sect->ceil, &n);
@@ -55,6 +61,9 @@ void LoadData()
     fclose(fp);
     free(vert);
 }
+
+
+
 void UnloadData()
 {
     for(unsigned a=0; a<NumSectors; ++a) free(sectors[a].vertex);
