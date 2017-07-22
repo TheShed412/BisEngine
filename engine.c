@@ -17,8 +17,8 @@ void LoadData()
     char Buf[256], word[256], *ptr;
     struct xy* vert = NULL, v;
     int n, m, NumVertices = 0;
-    while(fgets(Buf, sizeof Buf, fp)){
 
+    while(fgets(Buf, sizeof Buf, fp)){
         char setup;
         ptr = Buf;
         if (sscanf(ptr, "%32s%n", word, &n) == 1)   setup = word[0];
@@ -27,11 +27,13 @@ void LoadData()
         switch(setup)
         {
             case 'v': // vertex
-            ptr += n;
-            sscanf(ptr, "%f%n", &v.y, &n);
-            ptr += n;
+                ptr += n;
+                sscanf(ptr, "%f%n", &v.y, &n);
+                ptr += n;
                 while(sscanf(ptr, "%f%n", &v.x, &n) == 1){ 
-                    vert = realloc(vert, ++NumVertices * sizeof(*vert)); vert[NumVertices-1] = v;
+                    NumVertices++;
+                    vert = realloc(vert, NumVertices * sizeof(*vert)); 
+                    vert[NumVertices-1] = v;
                     ptr += n;
                 }
                 break;
@@ -41,11 +43,17 @@ void LoadData()
                 struct sector* sect = &sectors[NumSectors-1];
                 int* num = NULL;
                 sscanf(ptr += n, "%f%f%n", &sect->floor,&sect->ceil, &n);
-                for(m=0; sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#'; )
-                    { num = realloc(num, ++m * sizeof(*num)); num[m-1] = word[0]=='x' ? -1 : atoi(word); }
+
+                for(m=1; sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#'; m++){
+                    num = realloc(num, m * sizeof(*num));
+
+                    if(word[0] == 'x') num[m-1] = -1;
+                    else num[m-1] = atoi(word);//converts string to int
+                }
+
                 sect->npoints   = m /= 2;
-                sect->neighbors = malloc( (m  ) * sizeof(*sect->neighbors) );
-                sect->vertex    = malloc( (m+1) * sizeof(*sect->vertex)    );
+                sect->neighbors = malloc( (m) * sizeof(*sect->neighbors));
+                sect->vertex    = malloc( (m+1) * sizeof(*sect->vertex));
                 for(n=0; n<m; ++n) sect->neighbors[n] = num[m + n];
                 for(n=0; n<m; ++n) sect->vertex[n+1]  = vert[num[n]]; // TODO: Range checking
                 sect->vertex[0] = sect->vertex[m]; // Ensure the vertexes form a loop
@@ -72,8 +80,6 @@ void UnloadData()
     sectors    = NULL;
     NumSectors = 0;
 }
-
-
 
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
 void vline(int x, int y1,int y2, int top,int middle,int bottom)

@@ -21,7 +21,8 @@ int main()
 
     int wsad[4]={0,0,0,0}, ground=0, falling=1, moving=0, ducking=0;
     float yaw = 0;
-    for(;;)
+    
+    while(1)
     {
         SDL_LockSurface(surface);
         DrawScreen();
